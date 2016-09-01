@@ -5,10 +5,15 @@
     <title></title>
   </head>
   <body ng-app="pokeclick" ng-controller="PokeclickIndexController as vm">
-    Fart
+  <h1> Pokeclick </h1>
+  <p> {{vm.clicked}}</p>
     <main data-ui-view>
-
-
+      <div ng-click="vm.start()">
+        Start
+      </div>
+      <div id= "pokemon" ng-click="vm.poke()">
+        Click here
+      </div>
     </main>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular-resource.min.js"></script>
@@ -19,7 +24,30 @@
     ])
 
     function PokeclickIndexControllerFunction(){
-      console.log("working")
+      var vm = this;
+      var clicked = 0;
+
+      vm.poke = function(){
+        clicked++
+        vm.clicked = clicked;
+      }
+
+      var pokemon = document.getElementById("pokemon")
+
+      vm.start = function(){
+
+        setInterval(function(){
+          if(pokemon.style.display !== "none"){
+            pokemon.style.display = 'none'
+          }
+          else {
+            pokemon.style.display = 'block'
+          }
+        }, 2000)
+
+      }
+
+
     }
     </script>
   </body>
