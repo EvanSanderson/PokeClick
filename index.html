@@ -6,19 +6,26 @@
     <style>
       #pokemon {
         display: none;
+        position: absolute;
+      };
+      #nearby {
+        display:none;
       }
     </style>
   </head>
   <body ng-app="pokeclick" ng-controller="PokeclickIndexController as vm">
   <h1> Pokeclick </h1>
+  <div id="nearby">
+    <h3> There's a wild Pokemon nearby! </h3>
+  </div>
   <p> {{vm.clicked}}</p>
     <main data-ui-view>
-      <div ng-click="vm.start()">
-        Start
+      <div id= "start" ng-click="vm.start()">
+        <p> Start </p>
       </div>
       <div id= "pokemon" ng-click="vm.poke()">
-        <img src="http://cdn.bulbagarden.net/upload/thumb/4/43/043Oddish.png/250px-043Oddish.png">
-        <p> Click here! </p>
+        <img src={{vm.pokemonPic}}>
+        <p> Click me! </p>
       </div>
     </main>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
@@ -34,35 +41,57 @@
       // starts the point value at 0
       var clicked = 0;
 
+      // array of pokemon pics to be used
+      var pokemonPics = [
+        "http://cdn.bulbagarden.net/upload/thumb/4/43/043Oddish.png/250px-043Oddish.png",
+        "http://cdn.bulbagarden.net/upload/thumb/7/73/004Charmander.png/250px-004Charmander.png",
+        "http://cdn.bulbagarden.net/upload/thumb/0/0d/025Pikachu.png/250px-025Pikachu.png",
+        "http://cdn.bulbagarden.net/upload/thumb/3/39/007Squirtle.png/250px-007Squirtle.png",
+        "http://cdn.bulbagarden.net/upload/thumb/2/21/001Bulbasaur.png/250px-001Bulbasaur.png"
+      ]
+
+  // pushes random pokemon pic to DOM
+      pokemonPic = pokemonPics[Math.floor(Math.random() * pokemonPics.length)];
+      vm.pokemonPic = pokemonPic
+
+
         // this function increments the point value when you click the appropriate div
       vm.poke = function(){
         clicked++
         vm.clicked = clicked;
       }
-      // this targets the correct div to be clicked
+      // declaring a few important variables
 
       var pokemon = document.getElementById("pokemon")
-
+      var positions = ["100px", "200px", "300px", "400px", "500px"]
+      var start = document.getElementById("start")
+      var nearby = document.getElementById("nearby")
       // this generates a random number for the interval
-      var randNum = (Math.random() * (6000 - 1000) + 1000)
-
       // this starts the interval going to hide and show the pokemon
       vm.start = function(){
+        start.style.display = "none";
+        nearby.style.display = "block";
         console.log("start clicked")
+
         setInterval(function(){
           if(pokemon.style.display !== "none"){
             pokemon.style.display = 'none'
+            pokemon.style.left = positions[Math.floor(Math.random() * positions.length)];
+            pokemon.style.top = positions[Math.floor(Math.random() * positions.length)];
             console.log("changing visibility")
           }
           else {
-            pokemon.style.display = 'inline-block'
+            pokemon.style.display = 'inline-block';
+
           }
-        }, randNum)
-
-      }
-
-
+        }, (Math.random() * (5000 - 1000) + 1000))
     }
+
+
+
+
+
+}
     </script>
   </body>
 </html>
