@@ -3,6 +3,11 @@
   <head>
     <meta charset="utf-8">
     <title></title>
+    <style>
+      #pokemon {
+        display: none;
+      }
+    </style>
   </head>
   <body ng-app="pokeclick" ng-controller="PokeclickIndexController as vm">
   <h1> Pokeclick </h1>
@@ -12,7 +17,8 @@
         Start
       </div>
       <div id= "pokemon" ng-click="vm.poke()">
-        Click here
+        <img src="http://cdn.bulbagarden.net/upload/thumb/4/43/043Oddish.png/250px-043Oddish.png">
+        <p> Click here! </p>
       </div>
     </main>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.6/angular.min.js"></script>
@@ -25,25 +31,33 @@
 
     function PokeclickIndexControllerFunction(){
       var vm = this;
+      // starts the point value at 0
       var clicked = 0;
 
+        // this function increments the point value when you click the appropriate div
       vm.poke = function(){
         clicked++
         vm.clicked = clicked;
       }
+      // this targets the correct div to be clicked
 
       var pokemon = document.getElementById("pokemon")
 
-      vm.start = function(){
+      // this generates a random number for the interval
+      var randNum = (Math.random() * (6000 - 1000) + 1000)
 
+      // this starts the interval going to hide and show the pokemon
+      vm.start = function(){
+        console.log("start clicked")
         setInterval(function(){
           if(pokemon.style.display !== "none"){
             pokemon.style.display = 'none'
+            console.log("changing visibility")
           }
           else {
-            pokemon.style.display = 'block'
+            pokemon.style.display = 'inline-block'
           }
-        }, 2000)
+        }, randNum)
 
       }
 
