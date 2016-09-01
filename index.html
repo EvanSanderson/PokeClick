@@ -7,8 +7,11 @@
       #pokemon {
         display: none;
         position: absolute;
-      };
+      }
       #nearby {
+        display:none;
+      }
+      #gameInfo {
         display:none;
       }
     </style>
@@ -16,9 +19,12 @@
   <body ng-app="pokeclick" ng-controller="PokeclickIndexController as vm">
   <h1> Pokeclick </h1>
   <div id="nearby">
-    <h3> There's a wild Pokemon nearby! </h3>
+    <h3> There's a wild Pokemon nearby!</h3>
   </div>
-  <p> {{vm.clicked}}</p>
+  <div id="gameInfo">
+  <p>  {{vm.timer}} seconds in! </p>
+  <p> {{vm.clicked}} points! </p>
+</div>
     <main data-ui-view>
       <div id= "start" ng-click="vm.start()">
         <p> Start </p>
@@ -41,6 +47,7 @@
       // starts the point value at 0
       var clicked = 0;
 
+
       // array of pokemon pics to be used
       var pokemonPics = [
         "http://cdn.bulbagarden.net/upload/thumb/4/43/043Oddish.png/250px-043Oddish.png",
@@ -54,9 +61,10 @@
       pokemonPic = pokemonPics[Math.floor(Math.random() * pokemonPics.length)];
       vm.pokemonPic = pokemonPic
 
-
+      var gameInfo = document.getElementById("gameInfo");
         // this function increments the point value when you click the appropriate div
       vm.poke = function(){
+        gameInfo.style.display = "block";
         clicked++
         vm.clicked = clicked;
       }
@@ -68,7 +76,13 @@
       var nearby = document.getElementById("nearby")
       // this generates a random number for the interval
       // this starts the interval going to hide and show the pokemon
+      var timer = 0;
       vm.start = function(){
+        setInterval(function(){
+          timer = timer + 1
+          vm.timer = timer;
+        }, 1000)
+
         start.style.display = "none";
         nearby.style.display = "block";
         console.log("start clicked")
