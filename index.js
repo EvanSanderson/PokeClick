@@ -10,7 +10,10 @@ app.get("/", function(req,res){
 })
 
 io.on('connection', function(socket){
-  console.log("im in!");
+  socket.on('clicked', function(click){
+    io.emit('clicked', click)
+    console.log(click)
+  })
 })
 
 http.listen(3000, function(){

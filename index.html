@@ -41,10 +41,11 @@
 
     angular.module("pokeclick", [])
     .controller("PokeclickIndexController", [
+      "$scope",
       PokeclickIndexControllerFunction
     ])
 
-    function PokeclickIndexControllerFunction(){
+    function PokeclickIndexControllerFunction($scope){
       var vm = this;
       var socket = io();
       // starts the point value at 0
@@ -69,8 +70,16 @@
       vm.poke = function(){
         gameInfo.style.display = "block";
         clicked++
-        vm.clicked = clicked;
+        socket.emit('clicked', clicked)
+        socket.on('clicked', function(click){
+          $scope.$apply(function(){
+            console.log(clicked + "is clicked")
+            console.log(click + "is click")
+            vm.clicked = click + clicked;
+          });
+        })
       }
+
       // declaring a few important variables
 
       var pokemon = document.getElementById("pokemon")
@@ -80,6 +89,7 @@
       // this generates a random number for the interval
       // this starts the interval going to hide and show the pokemon
       var timer = 0;
+
       vm.start = function(){
         setInterval(function(){
           timer = timer + 1
@@ -103,6 +113,7 @@
           }
         }, (Math.random() * (5000 - 1000) + 1000))
     }
+
 
 
 
