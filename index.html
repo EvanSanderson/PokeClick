@@ -39,18 +39,27 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
 
-    angular.module("pokeclick", [])
+    angular.module("pokeclick", ["ngResource"])
+    .factory("PokeclickFactory", ["$resource", PokeclickFactory])
     .controller("PokeclickIndexController", [
       "$scope",
+      "PokeclickFactory",
       PokeclickIndexControllerFunction
     ])
 
-    function PokeclickIndexControllerFunction($scope){
+    function PokeclickIndexControllerFunction($scope, PokeclickFactory){
       var vm = this;
       var socket = io();
       // starts the point value at 0
       var clicked = 0;
-
+      PokeclickFactory.query().$promise.then(function(clicks){
+        var totalClicks;
+        for(i=0; i < clicks.length; i++){
+          totalClicks = i;
+        }
+        vm.clicked = totalClicks;
+        clicked = totalClicks;
+      })
 
       // array of pokemon pics to be used
       var pokemonPics = [
@@ -114,11 +123,12 @@
         }, (Math.random() * (5000 - 1000) + 1000))
     }
 
+}
 
-
-
-
-
+function PokeclickFactory ($resource){
+  return $resource("/api/clicks", {}, {
+    method: { update: "PUT" }
+  })
 }
     </script>
   </body>
